@@ -7,7 +7,8 @@
 /*\
  * [Description]
  *
- * This test case checks whether swapon(2) system call returns
+ * This test case checks whether swapon(2) system call returns:
+ *
  * - ENOENT when the path does not exist
  * - EINVAL when the path exists but is invalid
  * - EPERM when user is not a superuser
@@ -50,8 +51,8 @@ static void setup(void)
 	is_swap_supported(TEST_FILE);
 
 	SAFE_TOUCH(NOTSWAP_FILE, 0777, NULL);
-	make_swapfile(SWAP_FILE, 10, 0);
-	make_swapfile(USED_FILE, 10, 0);
+	MAKE_SMALL_SWAPFILE(SWAP_FILE);
+	MAKE_SMALL_SWAPFILE(USED_FILE);
 
 	if (tst_syscall(__NR_swapon, USED_FILE, 0))
 		tst_res(TWARN | TERRNO, "swapon(alreadyused) failed");
@@ -88,7 +89,6 @@ static struct tst_test test = {
 	.mount_device = 1,
 	.all_filesystems = 1,
 	.needs_root = 1,
-	.needs_tmpdir = 1,
 	.test = verify_swapon,
 	.tcnt = ARRAY_SIZE(tcases),
 	.setup = setup,

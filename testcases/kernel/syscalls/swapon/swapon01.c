@@ -38,7 +38,7 @@ static void verify_swapon(void)
 static void setup(void)
 {
 	is_swap_supported(SWAP_FILE);
-	make_swapfile(SWAP_FILE, 10, 0);
+	MAKE_SWAPFILE_SIZE(SWAP_FILE, 128);
 
 	SAFE_CG_PRINTF(tst_cg, "cgroup.procs", "%d", getpid());
 	SAFE_CG_PRINTF(tst_cg, "memory.max", "%lu", TESTMEM);
@@ -51,5 +51,6 @@ static struct tst_test test = {
 	.all_filesystems = 1,
 	.needs_cgroup_ctrls = (const char *const []){ "memory", NULL },
 	.test_all = verify_swapon,
+	.timeout = 60,
 	.setup = setup
 };

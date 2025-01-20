@@ -43,9 +43,7 @@ static void verify_swapoff(void)
 static void setup(void)
 {
 	is_swap_supported(TEST_FILE);
-
-	if (make_swapfile(SWAP_FILE, 65536, 1))
-		tst_brk(TBROK, "Failed to create file for swap");
+	SAFE_MAKE_SWAPFILE_BLKS(SWAP_FILE, 65536);
 }
 
 static struct tst_test test = {
@@ -54,7 +52,7 @@ static struct tst_test test = {
 	.dev_min_size = 350,
 	.all_filesystems = 1,
 	.needs_root = 1,
-	.needs_tmpdir = 1,
 	.test_all = verify_swapoff,
+	.timeout = 60,
 	.setup = setup
 };
