@@ -118,6 +118,7 @@ static void setup(void)
 
 
 static struct tst_test test = {
+	.timeout = 1,
 	.test = verify_ioctl,
 	.tcnt = ARRAY_SIZE(tcases),
 	.setup = setup,
@@ -126,7 +127,10 @@ static struct tst_test test = {
 	.needs_root = 1,
 	.mount_device = 1,
 	.mntpoint = MNTPOINT,
-	.dev_fs_type = "btrfs",
+	.filesystems = (struct tst_fs []) {
+		{.type = "btrfs"},
+		{}
+	},
 	.needs_drivers = (const char *const[]) {
 		"btrfs",
 		NULL,

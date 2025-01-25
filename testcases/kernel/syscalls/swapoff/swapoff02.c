@@ -87,9 +87,7 @@ static void setup(void)
 	nobody_uid = nobody->pw_uid;
 
 	is_swap_supported(TEST_FILE);
-
-	if (make_swapfile(SWAP_FILE, 10, 1))
-		tst_brk(TBROK, "Failed to create file for swap");
+	SAFE_MAKE_SMALL_SWAPFILE(SWAP_FILE);
 }
 
 static struct tst_test test = {
@@ -97,7 +95,6 @@ static struct tst_test test = {
 	.mount_device = 1,
 	.all_filesystems = 1,
 	.needs_root = 1,
-	.needs_tmpdir = 1,
 	.test = verify_swapoff,
 	.tcnt = ARRAY_SIZE(tcases),
 	.setup = setup
